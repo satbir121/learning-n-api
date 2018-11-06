@@ -17,3 +17,14 @@ vec2.addScalar();
 
 console.log( vec2.x );
 console.log( vec2.y );
+
+console.log("Check multiplyScalar by passing 2.");
+vec2.multiplyScalar(2);
+console.log( vec2.x );
+console.log( vec2.y );
+
+console.log("Check addScalar by passing no argument.");
+vec2.multiplyScalar();
+
+console.log( vec2.x );
+console.log( vec2.y );

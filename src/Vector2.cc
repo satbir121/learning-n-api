@@ -138,6 +138,7 @@ napi_value Vector2::Init(napi_env env, napi_value exports) {
         // DECLARE_NAPI_METHOD("sub", Sub),
         // DECLARE_NAPI_METHOD("dot", Dot),
         // DECLARE_NAPI_METHOD("multiply", Multiply),
+        DECLARE_NAPI_METHOD("multiplyScalar", MultiplyScalar),
         // DECLARE_NAPI_METHOD("divide", Divide),
         // DECLARE_NAPI_METHOD("cross", Cross),
     };
@@ -145,7 +146,7 @@ napi_value Vector2::Init(napi_env env, napi_value exports) {
     napi_value cons;
 
     // Then you define a class
-    status = napi_define_class(env, "Vector2", NAPI_AUTO_LENGTH, New, nullptr, 3, properties, &cons);
+    status = napi_define_class(env, "Vector2", NAPI_AUTO_LENGTH, New, nullptr, 4, properties, &cons);
     assert(status == napi_ok);
 
     // Then you create a reference
@@ -223,6 +224,36 @@ napi_value Vector2::AddScalar(napi_env env, napi_callback_info info) {
 
   obj->x_ += scalar;
   obj->y_ += scalar;
+
+  return jsthis;
+}
+
+napi_value Vector2::MultiplyScalar(napi_env env, napi_callback_info info) {
+  napi_status status;
+
+  size_t argc = 1;
+  napi_value value;
+  double scalar = 1;
+
+  napi_value jsthis;
+  status = napi_get_cb_info(env, info, &argc, &value, &jsthis, nullptr);
+  assert(status == napi_ok);
+
+  Vector2* obj;
+  status = napi_unwrap(env, jsthis, reinterpret_cast<void**>(&obj));
+  assert(status == napi_ok);
+
+  napi_valuetype valuetype;
+  status = napi_typeof(env, value, &valuetype);
+  assert(status == napi_ok);
+
+  if (valuetype != napi_undefined) {
+    status = napi_get_value_double(env, value, &scalar);
+    assert(status == napi_ok);
+  }
+
+  obj->x_ *= scalar;
+  obj->y_ *= scalar;
 
   return jsthis;
 }

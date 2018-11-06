@@ -19,6 +19,7 @@ private:
     static napi_value GetY(napi_env env, napi_callback_info info);
     static napi_value SetY(napi_env env, napi_callback_info info);
     static napi_value AddScalar(napi_env env, napi_callback_info info);
+    static napi_value MultiplyScalar(napi_env env, napi_callback_info info);
     // static napi_value Sub(napi_env env, napi_callback_info info);
     // static napi_value Dot(napi_env env, napi_callback_info info);
     // static napi_value Multiply(napi_env env, napi_callback_info info);
