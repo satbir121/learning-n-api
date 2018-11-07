@@ -133,7 +133,7 @@ napi_value Vector2::Init(napi_env env, napi_value exports) {
     napi_property_descriptor properties[] = {
         {"x", 0, 0, GetX, SetX, 0, napi_default, 0},
         {"y", 0, 0, GetY, SetY, 0, napi_default, 0},
-        // DECLARE_NAPI_METHOD("add", Add),
+        DECLARE_NAPI_METHOD("add", Add),
         DECLARE_NAPI_METHOD("addScalar", AddScalar),
         // DECLARE_NAPI_METHOD("sub", Sub),
         // DECLARE_NAPI_METHOD("dot", Dot),
@@ -146,7 +146,7 @@ napi_value Vector2::Init(napi_env env, napi_value exports) {
     napi_value cons;
 
     // Then you define a class
-    status = napi_define_class(env, "Vector2", NAPI_AUTO_LENGTH, New, nullptr, 4, properties, &cons);
+    status = napi_define_class(env, "Vector2", NAPI_AUTO_LENGTH, New, nullptr, 5, properties, &cons);
     assert(status == napi_ok);
 
     // Then you create a reference
@@ -195,6 +195,39 @@ napi_value Vector2::SetX(napi_env env, napi_callback_info info) {
   assert(status == napi_ok);
 
   return nullptr;
+}
+
+napi_value Vector2::Add(napi_env env, napi_callback_info info) {
+  napi_status status;
+// There will be only one value. So, argc = 1;
+  size_t argc = 1;
+  // This variable is used to store incoming vec2
+  napi_value jsvec2;
+
+  napi_value jsthis;
+  status = napi_get_cb_info(env, info, &argc, &jsvec2, &jsthis, nullptr);
+  assert(status == napi_ok);
+
+  napi_valuetype valuetype;
+  status = napi_typeof(env, jsvec2, &valuetype);
+  assert(status == napi_ok);
+  Vector2* vec2;
+  if (valuetype != napi_undefined) {
+    status = napi_unwrap(env, jsvec2, reinterpret_cast<void**>(&vec2));
+    assert(status == napi_ok);
+  } else {
+      vec2 = new Vector2(0, 0);
+  }
+  // Handle case when 
+
+  Vector2* obj;
+  status = napi_unwrap(env, jsthis, reinterpret_cast<void**>(&obj));
+  assert(status == napi_ok);
+
+  obj->x_ += vec2->x_;
+  obj->y_ += vec2->y_;
+
+  return jsthis;
 }
 
 

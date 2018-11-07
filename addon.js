@@ -28,3 +28,14 @@ vec2.multiplyScalar();
 
 console.log( vec2.x );
 console.log( vec2.y );
+
+console.log("Check add by passing vec2(4,5).");
+var vec2_1 = new Vector2(4,5);
+vec2.add(vec2_1);
+console.log( vec2.x );
+console.log( vec2.y );
+
+console.log("Check add by passing undefined.");
+vec2.add();
+console.log( vec2.x );
+console.log( vec2.y );
